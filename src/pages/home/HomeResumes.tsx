@@ -1,45 +1,28 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Briefcase, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CandidateService, type UserModel } from "../Authentication/service/Auth.Service";
 
 export default function HomeResumes() {
+  const [candidates, setCandidates] = useState<UserModel[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(2);
 
-  // Use latest candidates for "Recent"
-  const recentCandidates = useMemo(() => {
-    return [
-      {
-        id: 1,
-        name: "John Doe",
-        initials: "JD",
-        professionalTitle: "Software Engineer",
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        initials: "JS",
-        professionalTitle: "Product Manager",
-      },
-      {
-        id: 3,
-        name: "Michael Johnson",
-        initials: "MJ",
-        professionalTitle: "UI/UX Designer",
-      },
-      {
-        id: 4,
-        name: "Emily Brown",
-        initials: "EB",
-        professionalTitle: "Data Analyst",
-      },
-      {
-        id: 5,
-        name: "David Wilson",
-        initials: "DW",
-        professionalTitle: "Marketing Specialist",
-      },
-    ];
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        const users = await CandidateService.getAllUsers();
+        // Filter for candidates only
+        const filtered = users.filter(u => u.role === "CANDIDATE").slice(0, 10);
+        setCandidates(filtered);
+      } catch (error) {
+        console.error("Error fetching home resumes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCandidates();
   }, []);
 
   // Responsive visible count
@@ -54,7 +37,7 @@ export default function HomeResumes() {
     return () => window.removeEventListener("resize", updateVisibleCount);
   }, []);
 
-  const maxIndex = Math.max(0, recentCandidates.length - visibleCount);
+  const maxIndex = Math.max(0, candidates.length - visibleCount);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
@@ -63,6 +46,8 @@ export default function HomeResumes() {
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
+
+  if (loading || candidates.length === 0) return null; // Hide the section if no real users are found
 
   return (
     <section className="py-20 bg-gray-50 overflow-hidden">
@@ -101,9 +86,9 @@ export default function HomeResumes() {
               transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
             }}
           >
-            {recentCandidates.map((candidate: any) => (
+            {candidates.map((candidate: any) => (
               <div
-                key={candidate.id}
+                key={candidate._id || candidate.id}
                 className="flex-shrink-0 bg-white p-6 sm:p-8 border border-gray-100 flex flex-col sm:flex-row items-center justify-between hover:shadow-xl transition-all relative group"
                 style={{
                   width: `calc(${100 / visibleCount}% - ${(6 * (visibleCount - 1)) / visibleCount}px)`,
@@ -116,27 +101,27 @@ export default function HomeResumes() {
                   {/* Initials Avatar */}
                   <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-sm flex items-center justify-center border border-gray-200 shrink-0 shadow-sm transition-transform group-hover:scale-105 duration-300">
                     <span className="text-xl font-bold text-gray-500">
-                      {candidate.initials}
+                      {candidate.initials || candidate.name.split(' ').map((n: string) => n[0]).join('')}
                     </span>
                   </div>
 
                   <div>
                     <h3 className="text-base font-bold text-gray-900 mb-1 group-hover:text-[#00b4d8] transition-colors">
-                      <Link to={`/candidates/${candidate.id}`}>
+                      <Link to={`/candidates/${candidate._id || candidate.id}`}>
                         {candidate.name}
                       </Link>
                     </h3>
                     <div className="flex items-center gap-1.5 text-sm">
                       <Briefcase className="w-3.5 h-3.5 text-[#ff6b6b]" />
                       <span className="text-gray-500 font-medium">
-                        {candidate.professionalTitle}
+                        {candidate.professionalTitle || "Candidate"}
                       </span>
                     </div>
                   </div>
                 </div>
 
                 <Link
-                  to={`/candidates/${candidate.id}`}
+                  to={`/candidates/${candidate._id || candidate.id}`}
                   className="bg-[#0a0e27] hover:bg-[#00b4d8] text-white text-[10px] px-5 py-2.5 rounded uppercase tracking-wider font-bold transition-all shadow-sm active:scale-95"
                 >
                   VIEW PROFILE

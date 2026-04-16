@@ -1,6 +1,8 @@
 import PageWrapper from "../../shared/layouts/PageWrapper";
 import Loader from "../../shared/components/ui/Loader";
 import usePageLoader from "../../shared/components/hooks/usePageLoader";
+import PageHeader from "../../shared/components/ui/PageHeader";
+import { Briefcase, Building2, CreditCard, Send, Save, CheckCircle2 } from "lucide-react";
 
 export default function PostJobPage() {
   const isLoading = usePageLoader(1000);
@@ -10,248 +12,146 @@ export default function PostJobPage() {
   }
 
   return (
-    <PageWrapper>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Post a Job</h1>
-          <p className="text-gray-600 mb-8">
-            Find the perfect candidate for your position
-          </p>
-
-          <form className="space-y-6">
-            <div className="border-b pb-6">
-              <h2 className="text-xl font-semibold mb-4">Job Details</h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Job Title *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. Senior Frontend Developer"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Job Type *
-                  </label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Full Time</option>
-                    <option>Part Time</option>
-                    <option>Freelance</option>
-                    <option>Contract</option>
-                    <option>Internship</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Category *
-                  </label>
-                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Select Category</option>
-                    <option>Developer</option>
-                    <option>Technology</option>
-                    <option>Medical</option>
-                    <option>Accounting</option>
-                    <option>Restaurants</option>
-                    <option>Government</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Location *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. New York, NY"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Salary Range
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. $80k - $120k"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Application Deadline
-                  </label>
-                  <input
-                    type="date"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Job Description *
-                </label>
-                <textarea
-                  rows={6}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Describe the role, responsibilities, and requirements..."
-                />
-              </div>
-
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Requirements
-                </label>
-                <textarea
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="List the required skills, experience, and qualifications..."
-                />
-              </div>
-
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Benefits
-                </label>
-                <textarea
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Describe the benefits and perks offered..."
-                />
-              </div>
+    <PageWrapper disableTopPadding={true}>
+      <PageHeader title="Post a New Job" breadcrumb="Post Job" />
+      
+      <div className="max-w-5xl mx-auto px-6 py-16">
+        <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+          <div className="p-8 md:p-12 lg:p-16">
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 font-heading tracking-tight mb-2">Create Listing</h2>
+              <p className="text-slate-500 font-medium">Find the perfect candidate for your position by providing detailed information.</p>
             </div>
 
-            {/* Company Information Section */}
-            <div className="border-b pb-6">
-              <h2 className="text-xl font-semibold mb-4">
-                Company Information
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Company Name *
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Your company name"
-                  />
+            <form className="space-y-12">
+              {/* Job Details Section */}
+              <div className="space-y-8">
+                <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                  <div className="w-10 h-10 bg-brand-primary/10 rounded-xl flex items-center justify-center">
+                    <Briefcase className="w-5 h-5 text-brand-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 font-heading">Job Details</h3>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Company Website
-                  </label>
-                  <input
-                    type="url"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="https://yourcompany.com"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Job Title *</label>
+                    <input
+                      type="text"
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium"
+                      placeholder="e.g. Senior Frontend Developer"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Job Type *</label>
+                    <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium cursor-pointer appearance-none">
+                      <option>Full Time</option>
+                      <option>Part Time</option>
+                      <option>Freelance</option>
+                      <option>Contract</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Category *</label>
+                    <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium cursor-pointer appearance-none">
+                      <option>Technology</option>
+                      <option>Design</option>
+                      <option>Marketing</option>
+                      <option>Medical</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Location *</label>
+                    <input
+                      type="text"
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium"
+                      placeholder="e.g. Kigali, Rwanda"
+                    />
+                  </div>
                 </div>
 
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Company Description
-                  </label>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 ml-1">Job Description *</label>
                   <textarea
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Brief description of your company..."
+                    rows={6}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium"
+                    placeholder="Describe the role, responsibilities, and requirements..."
                   />
                 </div>
               </div>
-            </div>
 
-            {/* Application Settings */}
-            <div className="border-b pb-6">
-              <h2 className="text-xl font-semibold mb-4">
-                Application Settings
-              </h2>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Application Email *
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="applications@yourcompany.com"
-                  />
+              {/* Company Section */}
+              <div className="space-y-8">
+                <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                  <div className="w-10 h-10 bg-brand-secondary/10 rounded-xl flex items-center justify-center">
+                    <Building2 className="w-5 h-5 text-brand-secondary" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 font-heading">Company Information</h3>
                 </div>
 
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="featured"
-                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="featured" className="text-sm text-gray-700">
-                    Feature this job posting (+$50)
-                  </label>
-                </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="urgent"
-                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="urgent" className="text-sm text-gray-700">
-                    Mark as urgent (+$25)
-                  </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Company Name *</label>
+                    <input
+                      type="text"
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium"
+                      placeholder="Your company name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1">Website URL</label>
+                    <input
+                      type="url"
+                      className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all font-medium"
+                      placeholder="https://company.com"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Pricing Summary */}
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-4">Pricing Summary</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Standard Job Posting</span>
-                  <span className="font-medium">$99</span>
+              {/* Pricing & Checkout */}
+              <div className="space-y-8">
+                <div className="flex items-center gap-3 pb-2 border-b border-slate-100">
+                  <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+                    <CreditCard className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 font-heading">Pricing & Promotion</h3>
                 </div>
-                <div className="flex justify-between text-blue-600">
-                  <span>Featured Job</span>
-                  <span className="font-medium">+$50</span>
-                </div>
-                <div className="flex justify-between text-blue-600">
-                  <span>Urgent Listing</span>
-                  <span className="font-medium">+$25</span>
-                </div>
-                <div className="border-t pt-2 flex justify-between text-lg font-semibold">
-                  <span>Total</span>
-                  <span>$174</span>
+
+                <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
+                  <div className="space-y-4 mb-8">
+                    <div className="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-brand-primary" />
+                        <span className="font-bold text-slate-700">Standard Job Posting</span>
+                      </div>
+                      <span className="font-extrabold text-slate-900">$99</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button
+                      type="button"
+                      className="flex-1 flex items-center justify-center gap-2 px-8 py-4 bg-white border border-slate-200 rounded-2xl font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-sm"
+                    >
+                      <Save className="w-4 h-4" />
+                      Save as Draft
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-[2] flex items-center justify-center gap-2 px-8 py-4 bg-brand-primary text-white rounded-2xl font-bold uppercase tracking-widest text-sm shadow-lg shadow-brand-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    >
+                      <Send className="w-4 h-4" />
+                      Post Job & Pay
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Submit Buttons */}
-            <div className="flex gap-4">
-              <button
-                type="button"
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                Save as Draft
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                Post Job & Proceed to Payment
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </PageWrapper>

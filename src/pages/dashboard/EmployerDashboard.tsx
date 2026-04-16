@@ -6,7 +6,7 @@ import {
   Eye,
   MessageSquare,
   Settings,
-  CreditCard,
+  ArrowUpRight,
 } from "lucide-react";
 import StatCard from "./components/StatCard";
 import DashboardSection from "./components/DashboardSection";
@@ -30,25 +30,25 @@ export default function EmployerDashboard() {
       label: "Active Jobs",
       value: 0,
       icon: <Briefcase className="w-6 h-6" />,
-      color: "bg-blue-600",
+      color: "bg-brand-primary",
     },
     {
       label: "Total Applicants",
       value: 0,
       icon: <Users className="w-6 h-6" />,
-      color: "bg-purple-600",
+      color: "bg-brand-secondary",
     },
     {
       label: "Job Views",
       value: 0,
       icon: <Eye className="w-6 h-6" />,
-      color: "bg-orange-600",
+      color: "bg-amber-500",
     },
     {
       label: "Shortlisted",
       value: 0,
       icon: <FilePlus className="w-6 h-6" />,
-      color: "bg-green-600",
+      color: "bg-emerald-500",
     },
   ]);
 
@@ -60,57 +60,45 @@ export default function EmployerDashboard() {
           return;
         }
 
-        // Fetch employer profile
         const employerData = await getEmployerById(user.id);
         if (employerData) {
           setEmployer(employerData);
           const employerId = employerData.id || employerData._id || "";
 
-          // Fetch employer's jobs and applications
           try {
             const jobsData = await getJobsByEmployer(employerId);
-
-            const applicationsData =
-              await ApplicationService.getByEmployer(employerId);
+            const applicationsData = await ApplicationService.getByEmployer(employerId);
             setApplications(applicationsData);
 
-            // Calculate stats
-            const activeJobs = jobsData.filter(
-              (job) => job.isActive !== false,
-            ).length;
+            const activeJobs = jobsData.filter((job) => job.isActive !== false).length;
             const totalApplicants = applicationsData.length;
-            const totalViews = jobsData.reduce(
-              (sum, job) => sum + (job.views || 0),
-              0,
-            );
-            const shortlistedCount = applicationsData.filter(
-              (app: ApplicationModel) => app.status === "SHORTLISTED",
-            ).length;
+            const totalViews = jobsData.reduce((sum, job) => sum + (job.views || 0), 0);
+            const shortlistedCount = applicationsData.filter((app: ApplicationModel) => app.status === "SHORTLISTED").length;
 
             setStats([
               {
                 label: "Active Jobs",
                 value: activeJobs,
                 icon: <Briefcase className="w-6 h-6" />,
-                color: "bg-blue-600",
+                color: "bg-brand-primary",
               },
               {
                 label: "Total Applicants",
                 value: totalApplicants,
                 icon: <Users className="w-6 h-6" />,
-                color: "bg-purple-600",
+                color: "bg-brand-secondary",
               },
               {
                 label: "Job Views",
                 value: totalViews,
                 icon: <Eye className="w-6 h-6" />,
-                color: "bg-orange-600",
+                color: "bg-amber-500",
               },
               {
                 label: "Shortlisted",
                 value: shortlistedCount,
                 icon: <FilePlus className="w-6 h-6" />,
-                color: "bg-green-600",
+                color: "bg-emerald-500",
               },
             ]);
           } catch (error) {
@@ -131,15 +119,13 @@ export default function EmployerDashboard() {
     return <Loader />;
   }
 
-  // Convert applications to applicant format
   const recentApplicants: Applicant[] = applications
     .slice(0, 10)
     .map((app, index) => ({
       id: app.id || app._id || index,
       name: app.userId?.fullName || app.userId?.name || "Unknown Candidate",
       role: app.userId?.jobTitle || "Candidate",
-      professionalTitle:
-        app.userId?.professionalTitle || app.userId?.jobTitle || "Candidate",
+      professionalTitle: app.userId?.professionalTitle || app.userId?.jobTitle || "Candidate",
       jobTitle: app.jobId?.title || "Unknown Job",
       appliedDate: app.submissionDate
         ? new Date(app.submissionDate).toLocaleDateString("en-US", {
@@ -153,75 +139,89 @@ export default function EmployerDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          Employer Dashboard
-        </h1>
-        <p className="text-gray-500">
-          Manage your job listings and track applicants.
-        </p>
+      <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+           <div className="flex items-center gap-2 mb-2">
+              <span className="w-8 h-1 bg-brand-primary rounded-full"></span>
+              <span className="text-[10px] font-bold text-brand-primary uppercase tracking-[0.3em]">Employer Portal</span>
+           </div>
+           <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight font-heading mb-2">
+             Dashboard Overview
+           </h1>
+           <p className="text-slate-500 font-medium">
+             Welcome back! Here's a summary of your recent hiring activity.
+           </p>
+        </div>
+        
         {employer && (
-          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-900">
-              <strong>Company:</strong> {employer.companyName} |{" "}
-              <strong>Location:</strong> {employer.location}
-            </p>
-          </div>
+           <div className="flex items-center gap-4 bg-white px-6 py-4 rounded-[1.5rem] border border-slate-100 shadow-xl shadow-slate-200/20">
+              <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 uppercase font-black text-brand-primary">
+                 {employer.companyName.charAt(0)}
+              </div>
+              <div>
+                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Signed in as</p>
+                 <p className="text-sm font-black text-slate-900 leading-none">{employer.companyName}</p>
+              </div>
+           </div>
         )}
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
         {stats.map((stat, i) => (
           <StatCard key={i} {...stat} />
         ))}
       </div>
 
-      <div className="bg-white p-8 rounded-xl shadow-sm mb-10 text-center border-dashed border-2 border-gray-100 hover:border-[#00b4d8] transition-colors group">
-        <div className="max-w-md mx-auto">
-          <div className="w-16 h-16 bg-blue-50 text-[#00b4d8] rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-            <Briefcase className="w-8 h-8" />
+      {/* Post Job Call to Action */}
+      <div className="bg-brand-dark rounded-[3.5rem] p-10 md:p-14 mb-12 relative overflow-hidden group">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/10 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand-secondary/5 blur-[80px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
+        
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+          <div className="max-w-xl">
+             <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full mb-6 border border-brand-primary/20">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
+                <span className="text-[10px] font-black uppercase tracking-widest">Growth Opportunity</span>
+             </div>
+             <h2 className="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight leading-tight font-heading">
+                Ready to find your next <span className="text-brand-primary italic">star talent?</span>
+             </h2>
+             <p className="text-slate-400 text-lg font-medium leading-relaxed">
+                Connect with thousands of skilled professionals. Our premium job listing service ensures your role gets seen by the right candidates.
+             </p>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-2">
-            Need to hire someone?
-          </h3>
-          <p className="text-gray-500 mb-6">
-            Post a new job opening and reach thousands of talented candidates
-            instantly.
-          </p>
-          <button className="bg-[#00b4d8] hover:bg-[#009bc2] text-white px-8 py-3 rounded-lg font-bold uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center gap-2 mx-auto">
-            <FilePlus className="w-5 h-5" /> Post a Job
+          <button className="bg-brand-primary hover:bg-brand-primary/90 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-2xl shadow-brand-primary/30 active:scale-95 flex items-center justify-center gap-3 self-start lg:self-center">
+             Post a New Vacancy <ArrowUpRight className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <DashboardSection title="Recent Applicants" className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+        <DashboardSection title="Recent Talent Applications" className="lg:col-span-2">
           <ApplicantTable applicants={recentApplicants} />
         </DashboardSection>
 
         <DashboardSection title="Quick Actions">
-          <div className="space-y-3">
+            <div className="space-y-4">
             {[
-              { label: "Manage Jobs", icon: <Briefcase className="w-4 h-4" /> },
-              {
-                label: "View Messages",
-                icon: <MessageSquare className="w-4 h-4" />,
-              },
-              {
-                label: "Account Settings",
-                icon: <Settings className="w-4 h-4" />,
-              },
-              { label: "Billing", icon: <CreditCard className="w-4 h-4" /> },
+              { label: "Manage My Listings", path: "/dashboard/jobs", icon: <Briefcase className="w-5 h-5" />, color: "text-brand-primary" },
+              { label: "Candidate Messages", path: "/dashboard/messages", icon: <MessageSquare className="w-5 h-5" />, color: "text-amber-500" },
+              { label: "Organization Details", path: "/dashboard/profile", icon: <Settings className="w-5 h-5" />, color: "text-slate-400" },
             ].map((act) => (
               <button
                 key={act.label}
-                className="w-full flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg text-sm font-bold text-gray-700 hover:bg-[#00b4d8] hover:text-white transition-all shadow-sm group"
+                onClick={() => window.location.href = act.path}
+                className="w-full flex items-center justify-between gap-3 px-6 py-5 bg-slate-50/50 hover:bg-white rounded-3xl text-xs font-black text-slate-800 transition-all border border-slate-100 hover:border-brand-primary hover:shadow-xl hover:shadow-brand-primary/5 group"
               >
-                <span className="text-gray-400 group-hover:text-white transition-colors">
-                  {act.icon}
-                </span>
-                {act.label}
+                <div className="flex items-center gap-4">
+                  <div className={`${act.color} bg-white p-3 rounded-xl shadow-sm group-hover:scale-110 transition-transform`}>
+                    {act.icon}
+                  </div>
+                  <span className="uppercase tracking-widest">{act.label}</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary group-hover:translate-x-1 transition-all" />
               </button>
             ))}
           </div>
@@ -230,3 +230,8 @@ export default function EmployerDashboard() {
     </DashboardLayout>
   );
 }
+const ChevronRight = ({ className }: { className?: string }) => (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+);

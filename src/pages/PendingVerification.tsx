@@ -1,5 +1,6 @@
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Clock, Info, LogOut, Mail, ArrowLeft } from "lucide-react";
 
 export default function PendingVerification() {
     const { logout, user } = useAuth();
@@ -11,92 +12,87 @@ export default function PendingVerification() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-6">
-            <div className="max-w-2xl w-full">
+        <div className="min-h-screen bg-slate-50/50 flex items-center justify-center p-6 relative overflow-hidden">
+            {/* Background Decorative Elements */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/5 blur-[120px] rounded-full -z-10"></div>
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-secondary/5 blur-[100px] rounded-full -z-10"></div>
+
+            <div className="max-w-2xl w-full animate-fade-in-up">
                 {/* Main Card */}
-                <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-blue-100/50 border border-gray-100 p-12">
+                <div className="bg-white rounded-[3rem] shadow-2xl shadow-slate-200/50 border border-slate-100 p-12 overflow-hidden relative">
+                    {/* Top Decorative Ripple */}
+                     <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-primary/20"></div>
+
                     {/* Icon */}
-                    <div className="flex justify-center mb-8">
-                        <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center">
-                            <svg
-                                className="w-12 h-12 text-yellow-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
+                    <div className="flex justify-center mb-10">
+                        <div className="w-24 h-24 bg-amber-50 rounded-[2rem] flex items-center justify-center text-amber-500 shadow-lg shadow-amber-200/20 border border-amber-100 rotate-3 transition-transform hover:rotate-0 duration-500">
+                             <Clock className="w-12 h-12" />
                         </div>
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-4xl font-black text-gray-900 text-center mb-4">
-                        Account Pending Verification
-                    </h1>
+                    <div className="text-center mb-10">
+                        <h1 className="text-4xl font-bold text-slate-900 mb-4 font-heading tracking-tight">
+                            Account Pending Verification
+                        </h1>
+                        <p className="text-lg text-slate-500 font-medium">
+                            Thank you for joining us, <span className="font-bold text-brand-primary">{user?.name || user?.companyName}</span>!
+                        </p>
+                    </div>
 
-                    {/* Subtitle */}
-                    <p className="text-lg text-gray-600 text-center mb-8">
-                        Thank you for registering, <span className="font-bold text-[#00b4d8]">{user?.companyName}</span>!
-                    </p>
-
-                    {/* Info Box */}
-                    <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 mb-8">
-                        <h2 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                            <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            What's Next?
+                    {/* Info Card */}
+                    <div className="bg-slate-50 border border-slate-100 rounded-[2rem] p-8 mb-10">
+                        <h2 className="font-bold text-slate-900 mb-6 flex items-center gap-3 font-heading uppercase tracking-widest text-xs">
+                            <Info className="w-5 h-5 text-brand-primary" />
+                            What to expect?
                         </h2>
-                        <ul className="space-y-2 text-gray-700">
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-600 font-bold">•</span>
-                                <span>Your account is currently under review by our admin team</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-600 font-bold">•</span>
-                                <span>You will receive an email notification once your account is verified</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="text-blue-600 font-bold">•</span>
-                                <span>After verification, you'll be able to access your dashboard and post jobs</span>
-                            </li>
+                        <ul className="space-y-4">
+                            {[
+                                "Your account is currently under review by our specialist team.",
+                                "You will receive an email notification as soon as your profile is verified.",
+                                "Verification typically takes between 24 and 48 business hours."
+                            ].map((item, i) => (
+                                <li key={i} className="flex items-start gap-4 group">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-primary group-hover:scale-150 transition-transform"></div>
+                                    <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
-                    {/* Estimated Time */}
-                    <div className="text-center mb-8">
-                        <p className="text-sm text-gray-500">
-                            <span className="font-bold">Estimated verification time:</span> 24-48 hours
-                        </p>
+                    {/* Status Note */}
+                    <div className="flex items-center justify-center gap-2 mb-10 text-slate-400">
+                        <Clock className="w-4 h-4" />
+                        <span className="text-xs font-bold uppercase tracking-widest">Profile Status: Under Review</span>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex flex-col gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <button
                             onClick={handleLogout}
-                            className="w-full py-4 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl transition-all"
+                            className="flex items-center justify-center gap-2 py-5 px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-all uppercase tracking-widest text-[10px]"
                         >
-                            Logout
+                            <LogOut className="w-4 h-4" />
+                            Sign Out
                         </button>
+                        <a 
+                            href="mailto:hello@jobpro.com"
+                            className="flex items-center justify-center gap-2 py-5 px-6 bg-brand-primary text-white font-bold rounded-2xl transition-all uppercase tracking-widest text-[10px] shadow-xl shadow-brand-primary/20 hover:scale-[1.02] active:scale-95"
+                        >
+                            <Mail className="w-4 h-4" />
+                            Contact Support
+                        </a>
                     </div>
-
-                    {/* Support */}
-                    <div className="mt-8 pt-8 border-t border-gray-200 text-center">
-                        <p className="text-sm text-gray-600">
-                            Need help?{" "}
-                            <a href="mailto:support@jobportal.com" className="text-[#00b4d8] font-bold hover:underline">
-                                Contact Support
-                            </a>
-                        </p>
+                    
+                    {/* Back Link */}
+                    <div className="mt-12 pt-8 border-t border-slate-50 text-center">
+                        <button 
+                            onClick={handleLogout}
+                            className="inline-flex items-center gap-2 text-slate-400 hover:text-brand-primary font-bold text-xs transition-colors"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Return to Login
+                        </button>
                     </div>
                 </div>
             </div>

@@ -148,6 +148,17 @@ export const deleteJob = async (id: string): Promise<boolean> => {
   }
 };
 
+// Get job categories with counts
+export const getJobCategories = async (): Promise<{ name: string; count: number }[]> => {
+  try {
+    const response = await api.get(`/jobs/categories`);
+    return Array.isArray(response.data.data) ? response.data.data : [];
+  } catch (error) {
+    console.error("Error fetching job categories:", error);
+    throw error;
+  }
+};
+
 // Search jobs
 export const searchJobs = async (query: string): Promise<JobData[]> => {
   try {

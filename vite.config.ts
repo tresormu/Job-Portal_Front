@@ -6,11 +6,12 @@ export default defineConfig({
   server: {
     host: true,
     proxy: {
-      // Add this when you have a backend server
-      // '/api': {
-      //   target: 'http://localhost:3000',
-      //   changeOrigin: true,
-      // },
+      "/api": {
+        target: "https://jobportal.andasy.dev/api",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
 });

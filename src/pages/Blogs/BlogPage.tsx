@@ -7,10 +7,8 @@ import {
   FaFacebook,
   FaTwitter,
   FaLinkedin,
-  FaGoogle,
-  FaPinterest,
 } from "react-icons/fa";
-import { Calendar, Folder, Plus, ChevronRight } from "lucide-react";
+import { Calendar, User, Share2, ArrowRight, Search, Folder, ChevronRight } from "lucide-react";
 import PageHeader from "../../shared/components/ui/PageHeader";
 
 interface BlogPost {
@@ -27,79 +25,56 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     id: 1,
-    title: "Join Team HTML Developer Pro Jobs",
+    title: "How to Build a High-Performance Engineering Team",
     excerpt:
       "Nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non ...",
     content: "Full blog content here",
-    date: "14 Dec, 2017",
-    category: "IT Jobs",
+    date: "14 April, 2026",
+    category: "Career Advice",
     author: "Admin",
-    image: "/assets/blog1.jpg",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 2,
-    title: "Graphic Design Career Path",
+    title: "The Future of Remote Work in the Tech Industry",
     excerpt:
       "Explore the exciting world of graphic design and learn about career opportunities in the creative industry. This comprehensive guide covers...",
     content: "Full blog content here",
-    date: "12 Dec, 2017",
-    category: "Graphic Designer",
+    date: "12 April, 2026",
+    category: "Tech Trends",
     author: "Admin",
-    image: "/assets/blog2.jpg",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 3,
-    title: "Senior PHP Developer – WordPress",
+    title: "Mastering the Art of Modern Web Design",
     excerpt:
       "The legal industry is booming with new opportunities. Learn about different legal careers and how to break into this field...",
     content: "Full blog content here",
-    date: "10 Dec, 2017",
-    category: "Legal Jobs",
+    date: "10 April, 2026",
+    category: "Design",
     author: "Admin",
-    image: "/assets/blog3.jpg",
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 4,
-    title: "Trainee Web Designer, (Fresher)",
+    title: "Navigating Your Career Path in Rwanda",
     excerpt:
       "Mainframe development is still in high demand. Discover how to start your career in mainframe programming...",
     content: "Full blog content here",
-    date: "08 Dec, 2017",
-    category: "Mainframe Jobs",
+    date: "08 April, 2026",
+    category: "Industry News",
     author: "Admin",
-    image: "/assets/blog4.jpg",
-  },
-  {
-    id: 5,
-    title: "Hey Seeker, It’s Time to job Now!",
-    excerpt:
-      "A complete guide to using the PSU job portal and finding your perfect match...",
-    content: "Full blog content here",
-    date: "06 Dec, 2017",
-    category: "PSU Jobs",
-    author: "Admin",
-    image: "/assets/blog5.jpg",
-  },
-  {
-    id: 6,
-    title: "Protection Consultant – Website",
-    excerpt:
-      "Tips and tricks for breaking into the competitive tech industry...",
-    content: "Full blog content here",
-    date: "04 Dec, 2017",
-    category: "IT Jobs",
-    author: "Admin",
-    image: "/assets/blog6.jpg",
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
 const categories = [
-  { name: "Graphic Designer", count: 1 },
-  { name: "IT Jobs", count: 3 },
-  { name: "Legal Jobs", count: 1 },
-  { name: "Mainframe Jobs", count: 1 },
-  { name: "PSU Jobs", count: 1 },
-  { name: "Uncategorized", count: 1 },
+  { name: "Career Advice", count: 12 },
+  { name: "Tech Trends", count: 8 },
+  { name: "Design", count: 5 },
+  { name: "Industry News", count: 7 },
+  { name: "Uncategorized", count: 2 },
 ];
 
 export default function BlogPage() {
@@ -146,226 +121,202 @@ export default function BlogPage() {
 
   return (
     <PageWrapper disableTopPadding={true}>
-      <PageHeader title="The Blogs" breadcrumb="The Blogs" />
+      <PageHeader title="Insights & Resources" breadcrumb="Blog" />
 
       {/* Main Content */}
-      <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <section className="bg-slate-50 py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Blog Posts */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-12">
               {paginatedPosts.length > 0 ? (
-                <div className="space-y-8">
-                  {paginatedPosts.map((post) => (
-                    <div
-                      key={post.id}
-                      className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
-                    >
-                      {/* Featured Image */}
-                      <Link to={`/blog/${post.id}`}>
-                        <div className="h-64 overflow-hidden bg-gray-200">
-                          <img
-                            src={post.image}
-                            alt={post.title}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      </Link>
-
-                      {/* Content */}
-                      <div className="p-6">
-                        <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                          <span className="flex items-center gap-1">
-                            <Calendar size={16} className="text-red-500" />{" "}
-                            {post.date}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Folder size={16} className="text-red-500" />{" "}
-                            <span className="text-cyan-500 hover:text-cyan-700">
-                              {post.category}
-                            </span>
-                          </span>
-                        </div>
-
+                <>
+                  <div className="space-y-12">
+                    {paginatedPosts.map((post) => (
+                      <article
+                        key={post.id}
+                        className="group bg-white rounded-[2rem] overflow-hidden border border-slate-200 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(0,180,216,0.1)] hover:border-brand-primary/20"
+                      >
+                        {/* Featured Image */}
                         <Link to={`/blog/${post.id}`}>
-                          <h2 className="text-2xl font-bold text-gray-800 mb-3 hover:text-cyan-600 transition-colors cursor-pointer">
-                            {post.title}
-                          </h2>
+                          <div className="relative h-[22rem] overflow-hidden">
+                            <img
+                              src={post.image}
+                              alt={post.title}
+                              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div className="absolute top-6 left-6">
+                              <span className="px-4 py-1.5 bg-brand-primary/90 backdrop-blur-md text-white rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
+                                {post.category}
+                              </span>
+                            </div>
+                          </div>
                         </Link>
 
-                        <p className="text-gray-600 mb-6 leading-relaxed">
-                          {post.excerpt}
-                        </p>
-
-                        {/* Author and Share */}
-                        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">
-                              A
-                            </div>
-                            <span className="text-gray-700 font-semibold">
-                              {post.author}
+                        {/* Content */}
+                        <div className="p-10">
+                          <div className="flex items-center gap-6 text-[13px] text-slate-500 mb-6 font-medium">
+                            <span className="flex items-center gap-2">
+                              <Calendar size={16} className="text-brand-primary" />{" "}
+                              {post.date}
+                            </span>
+                            <span className="flex items-center gap-2">
+                              <User size={16} className="text-brand-primary" />{" "}
+                              By {post.author}
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm text-gray-600">
-                              SHARE:
-                            </span>
-                            <a
-                              href="#"
-                              className="text-gray-600 hover:text-blue-600 transition-colors"
-                            >
-                              <FaFacebook size={16} />
-                            </a>
-                            <a
-                              href="#"
-                              className="text-gray-600 hover:text-blue-400 transition-colors"
-                            >
-                              <FaTwitter size={16} />
-                            </a>
-                            <a
-                              href="#"
-                              className="text-gray-600 hover:text-blue-700 transition-colors"
-                            >
-                              <FaLinkedin size={16} />
-                            </a>
-                            <a
-                              href="#"
-                              className="text-gray-600 hover:text-red-600 transition-colors"
-                            >
-                              <FaGoogle size={16} />
-                            </a>
-                            <a
-                              href="#"
-                              className="text-gray-600 hover:text-red-500 transition-colors"
-                            >
-                              <FaPinterest size={16} />
-                            </a>
+                          <Link to={`/blog/${post.id}`}>
+                            <h2 className="text-3xl font-bold text-slate-900 mb-5 group-hover:text-brand-primary transition-colors cursor-pointer leading-tight font-heading">
+                              {post.title}
+                            </h2>
+                          </Link>
+
+                          <p className="text-slate-500 mb-8 leading-relaxed text-lg">
+                            {post.excerpt}
+                          </p>
+
+                          {/* Footer Actions */}
+                          <div className="flex items-center justify-between pt-8 border-t border-slate-100">
+                             <Link
+                                to={`/blog/${post.id}`}
+                                className="flex items-center gap-2 text-brand-primary font-bold text-sm group/link"
+                              >
+                                READ ARTICLE
+                                <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                              </Link>
+
+                            <div className="flex items-center gap-4">
+                              <Share2 size={16} className="text-slate-400" />
+                              <div className="flex items-center gap-3">
+                                {[FaFacebook, FaTwitter, FaLinkedin].map((Icon, i) => (
+                                  <a key={i} href="#" className="text-slate-400 hover:text-brand-primary transition-colors">
+                                    <Icon size={16} />
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                      </article>
+                    ))}
+                  </div>
 
                   {/* Pagination */}
-                  <div className="flex justify-center items-center gap-2 mt-8">
+                  <div className="flex justify-center items-center gap-3 pt-8">
                     <button
-                      onClick={() =>
-                        setCurrentPage(Math.max(1, currentPage - 1))
-                      }
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="px-4 py-2 border border-cyan-500 text-cyan-600 rounded-lg hover:bg-cyan-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-6 py-3 border border-slate-200 text-slate-500 rounded-2xl hover:border-brand-primary hover:text-brand-primary disabled:opacity-30 transition-all font-bold text-xs uppercase tracking-widest"
                     >
                       Previous
                     </button>
 
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (page) => (
+                    <div className="flex gap-2">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg transition-colors ${
+                          className={`w-12 h-12 rounded-2xl font-bold text-sm transition-all ${
                             currentPage === page
-                              ? "bg-cyan-500 text-white"
-                              : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                              ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/20 scale-110"
+                              : "text-slate-500 hover:bg-white hover:text-brand-primary border border-slate-200"
                           }`}
                         >
                           {page}
                         </button>
-                      ),
-                    )}
+                      ))}
+                    </div>
 
                     <button
-                      onClick={() =>
-                        setCurrentPage(Math.min(totalPages, currentPage + 1))
-                      }
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="px-4 py-2 border border-cyan-500 text-cyan-600 rounded-lg hover:bg-cyan-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-6 py-3 border border-slate-200 text-slate-500 rounded-2xl hover:border-brand-primary hover:text-brand-primary disabled:opacity-30 transition-all font-bold text-xs uppercase tracking-widest"
                     >
                       Next
                     </button>
                   </div>
-
-                  <div className="text-center text-gray-600 text-sm mt-4">
-                    Page {currentPage} of {totalPages} ({filteredPosts.length}{" "}
-                    posts)
-                  </div>
-                </div>
+                </>
               ) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-500 text-lg">No blog posts found.</p>
+                <div className="bg-white rounded-[2rem] border border-dashed border-slate-300 p-20 text-center animate-fade-in">
+                  <p className="text-slate-500 text-lg font-medium">No insights found matching your search.</p>
                 </div>
               )}
             </div>
 
             {/* Sidebar */}
-            <div className="lg:col-span-1">
+            <div className="lg:col-span-1 space-y-10">
               {/* Search Box */}
-              <div className="mb-8">
-                <div className="bg-cyan-500 text-white p-4 rounded-t-lg font-bold">
-                  Search
-                </div>
-                <div className="bg-white p-4 rounded-b-lg border border-gray-200">
+              <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 mb-6 font-heading flex items-center gap-2">
+                  <Search className="w-5 h-5 text-brand-primary" />
+                  Search Articles
+                </h3>
+                <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="Keywords..."
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-700"
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:border-brand-primary/50 focus:bg-white transition-all text-sm font-medium"
                   />
                 </div>
               </div>
 
               {/* Category Filter */}
-              <div>
-                <div className="bg-cyan-500 text-white p-4 rounded-t-lg font-bold">
-                  Blog Category
-                </div>
-                <div className="bg-white p-4 rounded-b-lg border border-gray-200 space-y-3">
+              <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-900 mb-6 font-heading flex items-center gap-2">
+                  <Folder className="w-5 h-5 text-brand-primary" />
+                  Categories
+                </h3>
+                <div className="space-y-4">
                   {categories.map((cat) => (
-                    <div key={cat.name}>
-                      <button
-                        onClick={() => handleCategoryClick(cat.name)}
-                        className={`flex items-center gap-2 transition-colors ${
-                          selectedCategory === cat.name
-                            ? "text-cyan-600 font-semibold"
-                            : "text-gray-700 hover:text-cyan-600"
-                        }`}
-                      >
+                    <button
+                      key={cat.name}
+                      onClick={() => handleCategoryClick(cat.name)}
+                      className={`flex items-center justify-between w-full group transition-all p-3 rounded-xl hover:bg-slate-50 ${
+                        selectedCategory === cat.name ? "bg-slate-50" : ""
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
                         <ChevronRight
                           size={16}
-                          className={`${selectedCategory === cat.name ? "text-cyan-600" : "text-gray-400"}`}
+                          className={`transition-transform duration-300 ${
+                            selectedCategory === cat.name ? "text-brand-primary rotate-90" : "text-slate-300 group-hover:translate-x-1"
+                          }`}
                         />
-                        <span>{cat.name}</span>
-                        <span className="text-cyan-500 ml-auto font-semibold">
-                          ({cat.count})
+                        <span className={`text-sm font-medium ${
+                          selectedCategory === cat.name ? "text-brand-primary" : "text-slate-600 group-hover:text-slate-900"
+                        }`}>
+                          {cat.name}
                         </span>
-                      </button>
-                    </div>
+                      </div>
+                      <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">
+                        {cat.count}
+                      </span>
+                    </button>
                   ))}
                 </div>
               </div>
 
-              {/* JobPro Sidebar */}
-              <div className="mt-8 bg-linear-to-b from-[#2a3f5f] to-[#1a2f4b] text-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 text-center">
-                <div className="mb-4 flex justify-center">
-                  <div className="text-4xl font-bold text-cyan-400">
-                    <span className="block">JobPro</span>
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold mb-3">
-                  Get Best Matched Jobs
-                </h3>
-                <p className="text-sm text-gray-300 mb-6">
-                  On your Email.
-                  <br />
-                  Add Resume NOW!
-                </p>
-                <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2">
-                  <Plus size={20} />
-                  ADD RESUME
-                </button>
+              {/* Newsletter CTA */}
+              <div className="bg-brand-dark rounded-[2rem] p-8 text-white relative overflow-hidden group shadow-2xl">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-brand-primary/20 transition-all duration-700"></div>
+                 <h3 className="text-2xl font-bold mb-4 font-heading z-10 relative">Stay Ahead of the Curve</h3>
+                 <p className="text-slate-400 text-sm mb-8 z-10 relative leading-relaxed">
+                   Get the latest career advice and industry news delivered directly to your inbox.
+                 </p>
+                 <div className="space-y-4 z-10 relative">
+                   <input 
+                      type="email" 
+                      placeholder="Email Address" 
+                      className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-brand-primary/50 transition-all text-sm font-medium"
+                   />
+                   <button className="w-full bg-brand-primary hover:bg-brand-primary/90 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-brand-primary/20 active:scale-95 uppercase tracking-widest text-xs">
+                     Subscribe Now
+                   </button>
+                 </div>
               </div>
             </div>
           </div>

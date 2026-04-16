@@ -1,30 +1,63 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getJobCategories } from "../Jobs/service/jobService";
+import { 
+  Code, 
+  Database, 
+  Stethoscope, 
+  Palette, 
+  BarChart, 
+  Globe, 
+  ArrowUpRight,
+  Monitor,
+  Tv
+} from "lucide-react";
+
+const categoryIcons: { [key: string]: any } = {
+  "Technology": Code,
+  "Developer": Code,
+  "Accounting": BarChart,
+  "Medical": Stethoscope,
+  "Design": Palette,
+  "Marketing": Globe,
+  "IT Company": Monitor,
+  "Media": Tv,
+};
+
 export default function HomeCategories() {
-  const categories = [
-    { name: "Developer", jobs: 7 },
-    { name: "Technology", jobs: 3 },
-    { name: "Accounting", jobs: 1 },
-    { name: "Medical", jobs: 2 },
-    { name: "Government", jobs: 0 },
-    { name: "Restaurants", jobs: 2 },
-    { name: "Marketing", jobs: 5 },
-    { name: "Design", jobs: 4 },
-    { name: "Finance", jobs: 6 },
-    { name: "Education", jobs: 3 },
-    { name: "Engineering", jobs: 8 },
-    { name: "Sales", jobs: 4 },
-  ];
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<{ name: string; count: number }[]>([]);
+
+  useEffect(() => {
+    getJobCategories()
+      .then(setCategories)
+      .catch(console.error);
+  }, []);
 
   return (
-    <div className="mt-16 grid grid-cols-2 md:grid-cols-6 gap-6">
-      {categories.map((cat) => (
-        <div
-          key={cat.name}
-          className="text-center p-6 rounded-lg cursor-pointer transition bg-white/5 hover:bg-[#00b4d8] hover:text-white"
-        >
-          <h4 className="font-semibold">{cat.name}</h4>
-          <p className="text-sm opacity-80">{cat.jobs} Jobs</p>
-        </div>
-      ))}
+    <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+      {categories.map((cat) => {
+        const Icon = categoryIcons[cat.name] || Database;
+        return (
+          <div
+            key={cat.name}
+            onClick={() => navigate(`/jobs?category=${encodeURIComponent(cat.name)}`)}
+            className="group flex flex-col p-6 rounded-3xl cursor-pointer transition-all duration-300 glass-dark border border-white/5 hover:border-brand-primary/50 hover:bg-brand-primary/10 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-primary/10"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-4 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
+              <Icon className="w-6 h-6 text-brand-primary group-hover:text-white" />
+            </div>
+            
+            <div className="flex justify-between items-start">
+              <div>
+                <h4 className="font-bold text-white group-hover:text-brand-primary transition-colors">{cat.name}</h4>
+                <p className="text-sm text-gray-500 mt-1">{cat.count} Open Positions</p>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-gray-600 group-hover:text-brand-primary transition-colors" />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

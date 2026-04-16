@@ -1,14 +1,14 @@
 import {
   Bell,
   Briefcase,
-  ArrowRight,
   ChevronRight,
   Facebook,
   Twitter,
-  Youtube,
   Linkedin,
   Instagram,
   ChevronUp,
+  Mail,
+  Send
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -18,206 +18,131 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0b2c3d] text-white mt-auto font-sans relative">
-      {/* Newsletter Section */}
-      <div className="bg-[#11354d] border-b border-[#1f4866]">
-        <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="bg-white/10 p-3 rounded-full">
-              <Bell className="w-8 h-8 text-white" />
+    <footer className="bg-brand-dark text-white mt-auto font-sans relative overflow-hidden">
+      {/* Decorative ambient light */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-brand-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand-secondary/5 blur-[150px] rounded-full pointer-events-none"></div>
+
+      {/* Newsletter Section - Hidden on mobile */}
+      <div className="hidden lg:block bg-white/5 border-y border-white/10 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-5 text-center lg:text-left">
+            <div className="bg-brand-primary/20 p-4 rounded-2xl shadow-lg shadow-brand-primary/10">
+              <Bell className="w-8 h-8 text-brand-primary animate-bounce-slow" />
             </div>
             <div>
-              <h3 className="text-xl font-bold">Get Jobs Notifications</h3>
-              <p className="text-gray-400 text-sm">
-                Free Subscribe Our Newsletter Now!
+              <h3 className="text-2xl font-bold font-heading tracking-tight">Get Job Notifications</h3>
+              <p className="text-gray-400 text-sm mt-1">
+                Stay ahead! Subscribe to our newsletter for the latest opportunities.
               </p>
             </div>
           </div>
 
-          <div className="flex w-full md:w-auto gap-2">
+          <div className="flex w-full lg:w-auto gap-3 items-center bg-white/5 p-2 rounded-2xl border border-white/10 focus-within:border-brand-primary/50 transition-all group">
+            <div className="pl-3 text-gray-400 group-focus-within:text-brand-primary transition-colors">
+              <Mail className="w-5 h-5" />
+            </div>
             <input
               type="email"
-              placeholder="Type your Email Address"
-              className="bg-white text-gray-800 px-4 py-2 rounded-md w-full md:w-80 focus:outline-none focus:ring-2 focus:ring-[#ff6b6b]"
+              placeholder="Your email address"
+              className="bg-transparent text-white px-2 py-3 w-full lg:w-72 focus:outline-none text-sm font-medium"
             />
-            <button className="bg-[#ff6b6b] hover:bg-[#ff5252] text-white px-6 py-2 rounded-md font-semibold transition-colors uppercase text-sm">
-              Submit
+            <button className="bg-brand-primary hover:bg-[#009bc2] text-white p-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg shadow-brand-primary/20 hover:scale-105 active:scale-95">
+              <Send className="w-4 h-4" />
+              <span className="hidden sm:inline text-xs uppercase tracking-widest">Subscribe</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="flex flex-col items-center mb-12">
-          <Link
-            to="/"
-            className="text-2xl font-bold flex items-center gap-2 mb-2"
-          >
-            <div className="border-2 border-[#00b4d8] rounded p-1">
-              <Briefcase className="w-6 h-6 text-[#00b4d8]" />
-            </div>
-            <span>JOB PORTAL.rw</span>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Who We Are */}
-          <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase border-b-2 border-[#00b4d8] w-fit pb-1">
-              Who We Are
-            </h4>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel
-              velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum.
-            </p>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Proin akshay handge vel velit auctor aliquet. Aenean sollicitudin,
-            </p>
-            <Link
-              to="/about"
-              className="flex items-center gap-2 text-white text-sm font-semibold hover:text-[#00b4d8] transition-colors"
-            >
-              <div className="bg-white/10 rounded-full p-1">
-                <ArrowRight className="w-3 h-3" />
+      {/* Main Footer Content - Condensed on small screens, hidden below md */}
+      <div className="hidden md:block max-w-7xl mx-auto px-6 py-20 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+          {/* Brand Col */}
+          <div className="lg:col-span-2">
+            <Link to="/" className="flex items-center gap-3 mb-8 group">
+              <div className="w-12 h-12 border-2 border-brand-primary rounded-xl flex items-center justify-center group-hover:bg-brand-primary/10 transition-all shadow-[0_0_15px_rgba(0,180,216,0.1)]">
+                <Briefcase className="w-7 h-7 text-brand-primary" />
               </div>
-              READ MORE
+              <span className="font-decorative text-4xl tracking-wider">
+                Job<span className="text-brand-primary">Portal</span>.rw
+              </span>
             </Link>
+            <p className="text-gray-400 text-base leading-relaxed mb-8 max-w-sm">
+              Connecting talented professionals with Rwanda's most innovative companies. Your career adventure starts right here.
+            </p>
+            <div className="flex gap-4">
+              {[
+                { icon: Facebook, color: "hover:text-blue-500" },
+                { icon: Twitter, color: "hover:text-sky-400" },
+                { icon: Linkedin, color: "hover:text-blue-600" },
+                { icon: Instagram, color: "hover:text-pink-500" },
+              ].map((social, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 transition-all ${social.color} hover:bg-white/10 hover:-translate-y-1 shadow-sm`}
+                >
+                  <social.icon className="w-5 h-5" />
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* For Candidate */}
-          <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase border-b-2 border-[#00b4d8] w-fit pb-1">
-              For Candidate
-            </h4>
-            <ul className="space-y-3">
-              {[
-                "Add a Resume",
-                "Candidate Dashboard",
-                "Past Applications",
-                "Job Alerts",
-                "Bookmarks",
-                "My Account",
-                "Your Jobs",
-              ].map((item) => (
-                <li key={item}>
-                  <Link
-                    to="#"
-                    className="text-gray-400 hover:text-[#00b4d8] text-sm flex items-center gap-2 transition-colors group"
-                  >
-                    <ChevronRight className="w-3 h-3 text-[#00b4d8] group-hover:translate-x-1 transition-transform" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* For Employers */}
-          <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase border-b-2 border-[#00b4d8] w-fit pb-1">
-              For Employers
-            </h4>
-            <ul className="space-y-3">
-              {[
-                "Browse Candidates",
-                "Employer Dashboard",
-                "Add Job",
-                "Job Page",
-                "Job Packages",
-                "Work Process",
-                "My Account",
-              ].map((item) => (
-                <li key={item}>
-                  <Link
-                    to="#"
-                    className="text-gray-400 hover:text-[#00b4d8] text-sm flex items-center gap-2 transition-colors group"
-                  >
-                    <ChevronRight className="w-3 h-3 text-[#00b4d8] group-hover:translate-x-1 transition-transform" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Information */}
-          <div>
-            <h4 className="text-white font-bold text-lg mb-6 uppercase border-b-2 border-[#00b4d8] w-fit pb-1">
-              Information
-            </h4>
-            <ul className="space-y-3">
-              {[
-                "About Us",
-                "Terms & Conditions",
-                "Privacy Policy",
-                "Careers with Us",
-                "Sitemap",
-                "Contact Us",
-                "FAQs",
-              ].map((item) => (
-                <li key={item}>
-                  <Link
-                    to="#"
-                    className="text-gray-400 hover:text-[#00b4d8] text-sm flex items-center gap-2 transition-colors group"
-                  >
-                    <ChevronRight className="w-3 h-3 text-[#00b4d8] group-hover:translate-x-1 transition-transform" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {[
+            {
+              title: "For Candidates",
+              links: ["Add a Resume", "Candidate Dashboard", "Job Alerts", "Bookmarks", "My Account"],
+            },
+            {
+              title: "For Employers",
+              links: ["Browse Candidates", "Employer Dashboard", "Post a Job", "Job Packages", "Work Process"],
+            },
+            {
+              title: "Information",
+              links: ["About Us", "Terms & Conditions", "Privacy Policy", "Contact Us", "FAQs"],
+            },
+          ].map((col, i) => (
+            <div key={i}>
+              <h4 className="text-white font-bold text-lg mb-8 font-heading relative inline-block">
+                {col.title}
+                <span className="absolute -bottom-2 left-0 w-8 h-1 bg-brand-primary rounded-full"></span>
+              </h4>
+              <ul className="space-y-4">
+                {col.links.map((link) => (
+                  <li key={link}>
+                    <Link
+                      to="#"
+                      className="text-gray-400 hover:text-brand-primary text-sm flex items-center gap-2 transition-all hover:translate-x-1 group"
+                    >
+                      <ChevronRight className="w-3.5 h-3.5 text-brand-primary/50 group-hover:text-brand-primary transition-colors" />
+                      {link}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Bottom Footer */}
-      <div className="bg-[#092636] py-6 border-t border-[#1f4866]">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 relative">
-          <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} JOB PORTAL.rw All Rights Reserved.
+      {/* Bottom Footer - Simplified for Mobile */}
+      <div className="bg-black/20 py-4 lg:py-8 border-t border-white/5 relative z-10 font-medium">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between gap-4">
+          <p className="text-gray-500 text-[10px] md:text-sm uppercase tracking-widest font-bold">
+            &copy; {new Date().getFullYear()} <span className="text-brand-primary">JOB PORTAL.rw</span>
           </p>
 
-          {/* Scroll to top button centered */}
-          <button
-            onClick={scrollToTop}
-            className="absolute left-1/2 -top-10 -translate-x-1/2 bg-[#1f4866] hover:bg-[#00b4d8] text-white p-3 rounded-lg transition-colors border-2 border-[#0b2c3d]"
-          >
-            <ChevronUp className="w-5 h-5" />
-          </button>
-
-          <div className="flex gap-4">
-            <a
-              href="#"
-              className="text-gray-500 hover:text-white transition-colors"
+          <div className="flex gap-4 md:gap-8 text-[9px] md:text-xs text-gray-500 uppercase tracking-widest font-bold">
+            <Link to="#" className="hover:text-brand-primary transition-colors">Support</Link>
+            <Link to="#" className="hidden md:block hover:text-brand-primary transition-colors">Sitemap</Link>
+            <button
+              onClick={scrollToTop}
+              className="text-brand-primary hover:text-white transition-colors flex items-center gap-1"
             >
-              <Facebook className="w-4 h-4" />
-            </a>
-            <a
-              href="#"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-            <a
-              href="#"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <Youtube className="w-4 h-4" />
-            </a>
-            <a
-              href="#"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>{" "}
-            {/* Used Linkedin as Pinterest/Google+ are less standard/icon availability */}
-            <a
-              href="#"
-              className="text-gray-500 hover:text-white transition-colors"
-            >
-              <Instagram className="w-4 h-4" />
-            </a>
+              <ChevronUp className="w-3 h-3" />
+              TOP
+            </button>
           </div>
         </div>
       </div>

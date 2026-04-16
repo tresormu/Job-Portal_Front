@@ -1,11 +1,7 @@
 import axios from "axios";
-// Create an Axios instance with default configuration
+
 const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_APP_API_URL ||
-    (window.location.hostname === "localhost"
-      ? "http://localhost:5000/api"
-      : "https://job-portal-back-fdlt.onrender.com/api"),
+  baseURL: import.meta.env.DEV ? "/api" : import.meta.env.VITE_BACKEND_URL_HOST,
   timeout: 20000,
   headers: {
     "Content-Type": "application/json",

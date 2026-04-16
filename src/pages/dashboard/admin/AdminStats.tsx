@@ -1,153 +1,137 @@
+import { useEffect, useState } from "react";
 import DashboardLayout from "../../../shared/layouts/DashboardLayout";
 import {
   Users,
   User,
   Briefcase,
-  BarChart3,
-  PieChart,
-  ArrowUpRight,
   Building2,
   FileText,
+  Calendar
 } from "lucide-react";
 import StatCard from "../components/StatCard";
+import { CandidateService } from "../../Authentication/service/Auth.Service";
+import { getAllJobs } from "../../Jobs/service/jobService";
+import { ApplicationService } from "../../../services/application.Service";
+import Loader from "../../../shared/components/ui/Loader";
 
 export default function AdminStats() {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState({
+    users: 0,
+    employers: 0,
+    candidates: 0,
+    jobs: 0,
+    applications: 0
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [users, jobs, apps] = await Promise.all([
+          CandidateService.getAllUsers(),
+          getAllJobs(),
+          ApplicationService.getAll()
+        ]);
+        
+        setData({
+          users: users.length,
+          employers: users.filter(u => u.role === "EMPLOYER").length,
+          candidates: users.filter(u => u.role === "CANDIDATE").length,
+          jobs: jobs.length,
+          applications: apps.length
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  if (loading) return <Loader />;
+
   const stats = [
     {
       label: "Total Users",
-      value: "4,285",
+      value: data.users,
       icon: <Users className="w-6 h-6" />,
-      color: "bg-blue-600",
+      color: "bg-brand-primary",
     },
     {
       label: "Employers",
-      value: "852",
+      value: data.employers,
       icon: <Building2 className="w-6 h-6" />,
-      color: "bg-purple-600",
+      color: "bg-brand-secondary",
     },
     {
-      label: "Applicants",
-      value: "3,433",
+      label: "Candidates",
+      value: data.candidates,
       icon: <User className="w-6 h-6" />,
-      color: "bg-indigo-600",
+      color: "bg-amber-500",
     },
     {
       label: "Total Jobs",
-      value: "1,240",
+      value: data.jobs,
       icon: <Briefcase className="w-6 h-6" />,
-      color: "bg-[#00b4d8]",
+      color: "bg-indigo-500",
     },
     {
       label: "Applications",
-      value: "12.5k",
+      value: data.applications,
       icon: <FileText className="w-6 h-6" />,
-      color: "bg-green-600",
+      color: "bg-emerald-500",
     },
   ];
 
   return (
     <DashboardLayout>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
-          Platform Statistics
-        </h1>
-        <p className="text-gray-500 text-sm font-medium">
-          Real-time overview of platform activity and growth.
-        </p>
+      <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 animate-fade-in-up">
+        <div>
+           <div className="flex items-center gap-2 mb-2">
+              <span className="w-8 h-1 bg-brand-primary rounded-full"></span>
+              <span className="text-[10px] font-black text-brand-primary uppercase tracking-[0.3em]">Analytics Suite</span>
+           </div>
+           <h1 className="text-4xl font-black text-slate-900 tracking-tight font-heading mb-3">
+             Platform Intelligence
+           </h1>
+           <p className="text-slate-500 font-medium text-lg">
+             Real-time growth indicators and platform activity.
+           </p>
+        </div>
+
+        <div className="flex items-center gap-3 bg-white px-6 py-4 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/20">
+             <Calendar className="w-5 h-5 text-slate-400" />
+             <p className="text-xs font-black text-slate-900 uppercase tracking-widest">
+               {new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}
+             </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
         {stats.map((stat, i) => (
           <StatCard key={i} {...stat} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-gray-900 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-[#00b4d8]" /> User Growth
-            </h3>
-            <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded flex items-center gap-1">
-              <ArrowUpRight className="w-3 h-3" /> +12%
-            </span>
-          </div>
-          <div className="h-64 bg-gray-50 rounded-xl flex items-center justify-center border border-dashed border-gray-200">
-            <p className="text-gray-400 text-sm font-medium">
-              Growth Chart Visualization
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="font-bold text-gray-900 flex items-center gap-2">
-              <PieChart className="w-5 h-5 text-purple-600" /> Job Categories
-            </h3>
-          </div>
-          <div className="h-64 bg-gray-50 rounded-xl flex items-center justify-center border border-dashed border-gray-200">
-            <p className="text-gray-400 text-sm font-medium">
-              Distribution Pie Chart
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-        <h3 className="font-bold text-gray-900 mb-6 uppercase tracking-wider text-xs">
-          Recent Platform Events
-        </h3>
-        <div className="space-y-4">
-          {[
-            {
-              title: "New Employer Registered",
-              time: "2 mins ago",
-              desc: "TechFlow Inc. joined the platform",
-              color: "bg-blue-100 text-blue-600",
-            },
-            {
-              title: "Subscription Renewed",
-              time: "15 mins ago",
-              desc: "Premium plan renewed for Digital Art Ltd",
-              color: "bg-purple-100 text-purple-600",
-            },
-            {
-              title: "Job Post Reported",
-              time: "1 hour ago",
-              desc: "Suspicious content report for 'Easy Money' job",
-              color: "bg-red-100 text-red-600",
-            },
-            {
-              title: "Large Batch Application",
-              time: "3 hours ago",
-              desc: "150+ applications received for 'React Dev' position",
-              color: "bg-green-100 text-green-600",
-            },
-          ].map((event, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-xl transition-all border border-transparent hover:border-gray-100 group"
-            >
-              <div
-                className={`w-10 h-10 ${event.color} rounded-full flex items-center justify-center font-bold`}
-              >
-                {event.title.charAt(0)}
+      <div className="bg-white p-12 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/40 text-center">
+          <div className="max-w-md mx-auto">
+              <div className="w-20 h-20 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <PieChartIcon className="w-10 h-10 text-brand-primary" />
               </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
-                  <p className="font-bold text-gray-900 text-sm group-hover:text-[#00b4d8] transition-colors">
-                    {event.title}
-                  </p>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase">
-                    {event.time}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500">{event.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+              <h3 className="text-2xl font-black text-slate-900 mb-4 font-heading tracking-tight">Advanced Analytics Coming Soon</h3>
+              <p className="text-slate-500 font-medium leading-relaxed">
+                  We are currently integrating deeper market insights and trend analysis into our dashboard.
+              </p>
+          </div>
       </div>
     </DashboardLayout>
   );
 }
+
+const PieChartIcon = ({ className }: { className?: string }) => (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+    </svg>
+);

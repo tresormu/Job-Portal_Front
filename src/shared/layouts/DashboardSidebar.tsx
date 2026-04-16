@@ -12,6 +12,7 @@ import {
   BarChart3,
   FolderTree,
   Building2,
+  ChevronRight
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import type { UserRole } from "../../contexts/AuthContext";
@@ -26,7 +27,7 @@ interface SidebarItem {
 const sidebarItems: SidebarItem[] = [
   // Shared
   {
-    label: "Dashboard",
+    label: "Overview",
     path: "/dashboard",
     icon: <LayoutDashboard className="w-5 h-5" />,
     roles: ["CANDIDATE", "EMPLOYER", "ADMIN"],
@@ -54,13 +55,13 @@ const sidebarItems: SidebarItem[] = [
 
   // Employer
   {
-    label: "Job Post",
+    label: "Post a Job",
     path: "/dashboard/post-job",
     icon: <PlusCircle className="w-5 h-5" />,
     roles: ["EMPLOYER"],
   },
   {
-    label: "My Jobs",
+    label: "My Listings",
     path: "/dashboard/manage-jobs",
     icon: <Briefcase className="w-5 h-5" />,
     roles: ["EMPLOYER"],
@@ -72,7 +73,7 @@ const sidebarItems: SidebarItem[] = [
     roles: ["EMPLOYER"],
   },
   {
-    label: "Company Profile",
+    label: "Company",
     path: "/dashboard/company-profile",
     icon: <Building2 className="w-5 h-5" />,
     roles: ["EMPLOYER"],
@@ -134,44 +135,67 @@ export default function DashboardSidebar() {
   );
 
   return (
-    <aside className="w-64 bg-[#2c3e50] text-white min-h-screen flex flex-col pt-8">
-      <div className="px-6 mb-10">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#00b4d8] rounded flex items-center justify-center font-bold text-white">
-            J
+    <aside className="w-72 bg-brand-dark text-white min-h-screen flex flex-col relative z-30 transition-all duration-300">
+      {/* Decorative Blur Background inside Sidebar */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,rgba(0,180,216,0.05),transparent_50%)] pointer-events-none"></div>
+
+      <div className="px-8 py-10 flex items-center justify-between relative z-10">
+        <Link to="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-brand-primary/20 group-hover:scale-105 transition-transform duration-300 antialiased">
+            <span className="font-logo text-xl">J</span>
           </div>
-          <span className="text-xl font-bold tracking-tight">
-            Job<span className="text-[#00b4d8]">Portal</span>
+          <span className="text-xl font-bold tracking-tight font-heading">
+            Job<span className="text-brand-primary">Portal</span>
           </span>
         </Link>
       </div>
 
-      <nav className="flex-1 px-4 space-y-1">
+      <div className="px-6 mb-4 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] relative z-10">
+        Main Menu
+      </div>
+
+      <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto no-scrollbar relative z-10">
         {filteredItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link
               key={item.label}
               to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                ? "bg-[#00b4d8] text-white"
-                : "text-gray-400 hover:bg-white/5 hover:text-white"
+              className={`flex items-center group relative px-4 py-3.5 rounded-[1.25rem] transition-all duration-300 ${isActive
+                ? "bg-brand-primary text-white shadow-xl shadow-brand-primary/20"
+                : "text-slate-400 hover:bg-white/5 hover:text-white"
                 }`}
             >
               {item.icon}
-              <span className="font-medium">{item.label}</span>
+              <span className="ml-3 font-semibold text-sm">{item.label}</span>
+              {isActive && (
+                <ChevronRight className="ml-auto w-4 h-4 text-white/50 animate-pulse" />
+              )}
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/5">
+      {/* User Space / Support Area */}
+      <div className="p-6 mt-auto relative z-10">
+        <div className="bg-white/5 rounded-3xl p-5 border border-white/5 mb-6 group cursor-pointer hover:bg-white/10 transition-colors">
+            <div className="flex items-center gap-3">
+               <div className="w-10 h-10 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary">
+                  <User className="w-5 h-5" />
+               </div>
+               <div>
+                  <p className="text-xs font-bold text-white">Need Support?</p>
+                  <p className="text-[10px] text-slate-500">Contact our experts</p>
+               </div>
+            </div>
+        </div>
+
         <button
           onClick={logout}
-          className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:text-[#ff6b6b] hover:bg-red-50/5 rounded-lg transition-all group"
+          className="flex items-center gap-3 px-6 py-4 w-full text-slate-400 hover:text-rose-400 hover:bg-rose-400/5 rounded-2xl transition-all group font-bold text-sm"
         >
-          <LogOut className="w-5 h-5 transition-colors group-hover:text-[#ff6b6b]" />
-          <span className="font-medium">Logout</span>
+          <LogOut className="w-5 h-5 transition-colors group-hover:text-rose-400" />
+          <span>Sign Out</span>
         </button>
       </div>
     </aside>
