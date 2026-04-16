@@ -10,8 +10,6 @@ import {
 import StatCard from "../components/StatCard";
 import DashboardSection from "../components/DashboardSection";
 import { CandidateService } from "../../Authentication/service/Auth.Service";
-import { getAllJobs } from "../../Jobs/service/jobService";
-import { ApplicationService } from "../../../services/application.Service";
 import Loader from "../../../shared/components/ui/Loader";
 
 export default function AdminDashboard() {
