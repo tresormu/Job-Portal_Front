@@ -19,13 +19,17 @@ export default function CandidateDashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user?._id) return;
+      const userId = user?.id || user?._id;
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
       
       setLoading(true);
       try {
         const [statsData, userApps, recommended] = await Promise.all([
           ApplicationService.getCandidateStats(),
-          ApplicationService.getByUser(user._id),
+          ApplicationService.getByUser(userId),
           getAllJobs(3)
         ]);
         
