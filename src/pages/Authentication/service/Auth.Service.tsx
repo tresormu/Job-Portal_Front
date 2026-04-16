@@ -128,4 +128,8 @@ export const CandidateService = {
     const response = await api.post(`/auth/login`, UserData);
     return response.data;
   },
+  getAdminStats: async (): Promise<any> => {
+    const response = await api.get(`/admin/stats`);
+    return response.data;
+  },
 };

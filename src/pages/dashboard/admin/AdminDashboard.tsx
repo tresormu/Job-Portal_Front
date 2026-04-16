@@ -25,16 +25,15 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [users, jobs, apps] = await Promise.all([
-          CandidateService.getAllUsers(),
-          getAllJobs(),
-          ApplicationService.getAll()
-        ]);
-        setCounts({
-          users: users.length,
-          jobs: jobs.length,
-          applications: apps.length
-        });
+        const stats = await CandidateService.getAdminStats();
+        if (stats?.success) {
+          const { totalUsers, totalJobs, totalApplications } = stats.data;
+          setCounts({
+            users: totalUsers || 0,
+            jobs: totalJobs || 0,
+            applications: totalApplications || 0
+          });
+        }
       } catch (error) {
         console.error("Error fetching admin counts:", error);
       } finally {

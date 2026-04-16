@@ -17,7 +17,10 @@ export default function AppliedJobs() {
   useEffect(() => {
     const fetchApplications = async () => {
       const userId = user?._id || user?.id;
-      if (!userId) return;
+      if (!userId) {
+        setIsLoading(false);
+        return;
+      }
       try {
         setIsLoading(true);
         const data = await ApplicationService.getByUser(userId);

@@ -55,12 +55,13 @@ export default function EmployerDashboard() {
   useEffect(() => {
     const fetchEmployerData = async () => {
       try {
-        if (!user?.id) {
+        const userId = user?.id || user?._id;
+        if (!userId) {
           setLoading(false);
           return;
         }
 
-        const employerData = await getEmployerById(user.id);
+        const employerData = await getEmployerById(userId);
         if (employerData) {
           setEmployer(employerData);
           const employerId = employerData.id || employerData._id || "";
