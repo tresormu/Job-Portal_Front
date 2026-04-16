@@ -15,6 +15,7 @@ export default function CandidateDashboard() {
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState<ApplicationModel[]>([]);
   const [recommendedJobs, setRecommendedJobs] = useState<JobData[]>([]);
+  const [dashboardStats, setDashboardStats] = useState({ appliedJobs: 0, shortlisted: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,18 +23,19 @@ export default function CandidateDashboard() {
       
       setLoading(true);
       try {
-        const [userApps, allJobs] = await Promise.all([
+        const [statsData, userApps, recommended] = await Promise.all([
+          ApplicationService.getCandidateStats(),
           ApplicationService.getByUser(user._id),
-          getAllJobs()
+          getAllJobs(3)
         ]);
         
         setApplications(userApps || []);
+        setRecommendedJobs(recommended || []);
         
-        // Use featured jobs or just latest jobs as recommendations
-        const recommendations = allJobs
-          .filter(job => job.featured || true)
-          .slice(0, 3);
-        setRecommendedJobs(recommendations);
+        if (statsData?.success) {
+          const { appliedJobs, shortlisted } = statsData.data;
+          setDashboardStats({ appliedJobs, shortlisted });
+        }
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {
@@ -51,13 +53,13 @@ export default function CandidateDashboard() {
   const stats = [
     {
       label: "Applied Jobs",
-      value: applications.length,
+      value: dashboardStats.appliedJobs || applications.length,
       icon: <Briefcase className="w-6 h-6" />,
       color: "bg-brand-primary",
     },
     {
       label: "Shortlisted",
-      value: shortlistedCount,
+      value: dashboardStats.shortlisted || shortlistedCount,
       icon: <CheckCircle className="w-6 h-6" />,
       color: "bg-emerald-500",
     },

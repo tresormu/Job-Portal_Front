@@ -38,9 +38,10 @@ export interface JobResponse {
 }
 
 // Get all jobs
-export const getAllJobs = async (): Promise<JobData[]> => {
+export const getAllJobs = async (limit?: number): Promise<JobData[]> => {
   try {
-    const response = await api.get(`/jobs/all`);
+    const url = limit ? `/jobs/all?limit=${limit}` : `/jobs/all`;
+    const response = await api.get(url);
 
     if (Array.isArray(response.data.data)) {
       return response.data.data.map((job: JobData) => ({

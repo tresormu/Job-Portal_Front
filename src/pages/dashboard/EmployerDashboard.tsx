@@ -15,7 +15,7 @@ import type { Applicant } from "./components/ApplicantTable";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { getJobsByEmployer } from "../Jobs/service/jobService";
-import { getEmployerById } from "../Employer/service/employerService";
+import { getEmployerById, getEmployerStats } from "../Employer/service/employerService";
 import { ApplicationService } from "../../services/application.Service";
 import type { ApplicationModel } from "../../services/application.Service";
 import Loader from "../../shared/components/ui/Loader";
@@ -66,41 +66,57 @@ export default function EmployerDashboard() {
           const employerId = employerData.id || employerData._id || "";
 
           try {
-            const jobsData = await getJobsByEmployer(employerId);
-            const applicationsData = await ApplicationService.getByEmployer(employerId);
+            // Fetch applications and jobs for lists
+            const [jobsData, applicationsData, statsData] = await Promise.all([
+              getJobsByEmployer(employerId),
+              ApplicationService.getByEmployer(employerId),
+              getEmployerStats()
+            ]);
+
             setApplications(applicationsData);
 
-            const activeJobs = jobsData.filter((job) => job.isActive !== false).length;
-            const totalApplicants = applicationsData.length;
-            const totalViews = jobsData.reduce((sum, job) => sum + (job.views || 0), 0);
-            const shortlistedCount = applicationsData.filter((app: ApplicationModel) => app.status === "SHORTLISTED").length;
+            if (statsData?.success) {
+              const { activeJobs, totalApplicants, totalViews, shortlistedCount } = statsData.data;
+              setStats([
+                {
+                  label: "Active Jobs",
+                  value: activeJobs,
+                  icon: <Briefcase className="w-6 h-6" />,
+                  color: "bg-brand-primary",
+                },
+                {
+                  label: "Total Applicants",
+                  value: totalApplicants,
+                  icon: <Users className="w-6 h-6" />,
+                  color: "bg-brand-secondary",
+                },
+                {
+                  label: "Job Views",
+                  value: totalViews,
+                  icon: <Eye className="w-6 h-6" />,
+                  color: "bg-amber-500",
+                },
+                {
+                  label: "Shortlisted",
+                  value: shortlistedCount,
+                  icon: <FilePlus className="w-6 h-6" />,
+                  color: "bg-emerald-500",
+                },
+              ]);
+            } else {
+              // Fallback calculation if stats API fails
+              const activeJobs = jobsData.filter((job) => job.isActive !== false).length;
+              const totalApplicants = applicationsData.length;
+              const totalViews = jobsData.reduce((sum, job) => sum + (job.views || 0), 0);
+              const shortlistedCount = applicationsData.filter((app: ApplicationModel) => app.status === "SHORTLISTED").length;
 
-            setStats([
-              {
-                label: "Active Jobs",
-                value: activeJobs,
-                icon: <Briefcase className="w-6 h-6" />,
-                color: "bg-brand-primary",
-              },
-              {
-                label: "Total Applicants",
-                value: totalApplicants,
-                icon: <Users className="w-6 h-6" />,
-                color: "bg-brand-secondary",
-              },
-              {
-                label: "Job Views",
-                value: totalViews,
-                icon: <Eye className="w-6 h-6" />,
-                color: "bg-amber-500",
-              },
-              {
-                label: "Shortlisted",
-                value: shortlistedCount,
-                icon: <FilePlus className="w-6 h-6" />,
-                color: "bg-emerald-500",
-              },
-            ]);
+              setStats([
+                { label: "Active Jobs", value: activeJobs, icon: <Briefcase className="w-6 h-6" />, color: "bg-brand-primary" },
+                { label: "Total Applicants", value: totalApplicants, icon: <Users className="w-6 h-6" />, color: "bg-brand-secondary" },
+                { label: "Job Views", value: totalViews, icon: <Eye className="w-6 h-6" />, color: "bg-amber-500" },
+                { label: "Shortlisted", value: shortlistedCount, icon: <FilePlus className="w-6 h-6" />, color: "bg-emerald-500" },
+              ]);
+            }
           } catch (error) {
             console.error("Error fetching jobs and applications:", error);
           }

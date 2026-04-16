@@ -156,3 +156,14 @@ export const getTopHiringCompanies = async () => {
     throw error;
   }
 };
+
+// Get employer statistics
+export const getEmployerStats = async () => {
+  try {
+    const response = await api.get(`/employers/stats`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching employer stats:", error);
+    throw error;
+  }
+};

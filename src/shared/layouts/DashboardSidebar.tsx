@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   FileText,
@@ -129,6 +129,12 @@ const sidebarItems: SidebarItem[] = [
 export default function DashboardSidebar() {
   const { role, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const filteredItems = sidebarItems.filter((item) =>
     item.roles.includes(role),
@@ -191,7 +197,7 @@ export default function DashboardSidebar() {
         </div>
 
         <button
-          onClick={logout}
+          onClick={handleLogout}
           className="flex items-center gap-3 px-6 py-4 w-full text-slate-400 hover:text-rose-400 hover:bg-rose-400/5 rounded-2xl transition-all group font-bold text-sm"
         >
           <LogOut className="w-5 h-5 transition-colors group-hover:text-rose-400" />

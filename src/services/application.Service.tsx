@@ -111,4 +111,9 @@ export const ApplicationService = {
   delete: async (id: string): Promise<void> => {
     await api.delete(`/applications/${id}`);
   },
+
+  getCandidateStats: async (): Promise<any> => {
+    const response = await api.get("/auth/stats");
+    return response.data;
+  },
 };

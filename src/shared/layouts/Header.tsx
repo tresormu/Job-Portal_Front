@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Briefcase,
   User,
@@ -25,7 +25,13 @@ export default function Header({
   setIsMobileMenuOpen,
 }: HeaderProps) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const getLinkClass = (path: string) => {
     const baseClass = "flex items-center gap-1.5 hover:text-brand-primary transition-all duration-300 font-medium";
@@ -90,7 +96,7 @@ export default function Header({
                 <LayoutDashboard className="w-4 h-4" /> Dashboard
               </Link>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="p-2.5 border border-white/10 hover:border-brand-secondary hover:text-brand-secondary rounded-xl transition-all group"
                 title="Logout"
               >
@@ -169,7 +175,7 @@ export default function Header({
                 </Link>
                 <button
                   onClick={() => {
-                    logout();
+                    handleLogout();
                     setIsMobileMenuOpen(false);
                   }}
                   className="w-full py-4 rounded-2xl border border-brand-secondary/30 text-brand-secondary font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2"

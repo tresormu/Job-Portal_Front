@@ -76,7 +76,7 @@ export default function PendingVerification() {
                             Sign Out
                         </button>
                         <a 
-                            href="mailto:hello@jobpro.com"
+                            href="mailto:tresormugisha07@gmail.com"
                             className="flex items-center justify-center gap-2 py-5 px-6 bg-brand-primary text-white font-bold rounded-2xl transition-all uppercase tracking-widest text-[10px] shadow-xl shadow-brand-primary/20 hover:scale-[1.02] active:scale-95"
                         >
                             <Mail className="w-4 h-4" />
